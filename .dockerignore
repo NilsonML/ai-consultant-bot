@@ -1,0 +1,9 @@
+# Что НЕ копировать в образ: секреты, данные, служебные файлы
+.env
+data/
+.git/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/

@@ -1,0 +1,17 @@
+# docker compose up -d — собрать образ и запустить бота в фоне
+services:
+  bot:
+    build: .
+    env_file: .env              # токены и настройки берутся из .env, в образ не попадают
+    restart: unless-stopped     # упал или сервер перезагрузился — Docker поднимет бота сам
+    volumes:
+      # Папки с хоста подключаются внутрь контейнера:
+      # data — база SQLite переживает пересборку и перезапуск контейнера;
+      # knowledge — заказчик меняет файлы на сервере и делает /reload, без пересборки образа
+      - ./data:/app/data
+      - ./knowledge:/app/knowledge
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"         # ограничиваем логи, чтобы за год не забить диск сервера
+        max-file: "3"
